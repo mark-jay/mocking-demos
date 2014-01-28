@@ -1,4 +1,5 @@
 import mockit.*;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -30,7 +31,7 @@ public class JMockitTestSuite {
             depcy.doFoo(anyInt); result = 10;
             depcy.doFoo(anyInt); result = 10;
         }};
-        System.out.println(new Dependant().doFoo2(2));
+        System.out.println("test 1:" + new Dependant().doFoo2(2));
     }
 
     /**
@@ -58,6 +59,37 @@ public class JMockitTestSuite {
         new Expectations() {{
             depcy1.doFoo(anyInt); result = 10; times = 2;
         }};
-        System.out.println("test2: " + new Dependant1().doFoo2(2));
+        System.out.println("test 2: " + new Dependant1().doFoo2(2));
+    }
+
+    @Test
+    public void test_3(@Capturing final Dependency1 depcy1) {
+        System.out.println("test 3: " + new Dependant1().doFoo2(2));
+        new Verifications() {{
+            depcy1.doFoo(anyInt); times = 2;
+            depcy1.doFoo(31337);  times = 0;
+        }};
+    }
+
+    @Test
+    public void test_4(@Capturing final Dependency1 depcy1) {
+        System.out.println("test 4: " + new Dependant1().doFoo2(2));
+        new Verifications() {{
+            depcy1.doFoo(anyInt); minTimes = 0; maxTimes = 10;
+        }};
+    }
+
+    /**State-oriented mocking*/
+    @Test
+    public void test_5() {
+        new MockUp<Dependency>() {
+            @Mock(invocations = 2) // (the invocation count constraint is optional)
+            public int doFoo(int a) {
+                Assert.assertTrue(a > 0);
+                return a+1;
+            }
+            // Other mock or regular methods...
+        };
+        System.out.println("test 5: " + new Dependant().doFoo2(2));
     }
 }
