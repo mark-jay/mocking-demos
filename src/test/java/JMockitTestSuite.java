@@ -1,3 +1,4 @@
+import mockit.Expectations;
 import mockit.Mocked;
 import mockit.NonStrictExpectations;
 import mockit.Verifications;
@@ -24,14 +25,14 @@ public class JMockitTestSuite {
     Dependency depcy;
 
     @Test
-    public void myFirstTestMethod() {
-        new NonStrictExpectations() {{
+    public void test_1() {
+        new Expectations() {{
+            // commenting any of these lines will cause to error. Order matters too
+            // but if we used NonStrictExpectations() instead we could use any of them
+            new Dependency();
+            depcy.doFoo(anyInt); result = 10;
             depcy.doFoo(anyInt); result = 10;
         }};
-
         System.out.println(new Dependant().doFoo2(2));
-        new Verifications() {{
-
-        }};
     }
 }
