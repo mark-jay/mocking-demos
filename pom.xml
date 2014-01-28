@@ -15,7 +15,7 @@
             <artifactId>mockito-all</artifactId>
             <version>1.8.4</version>
         </dependency>
-        <!-- JMockit -->
+        <!-- JMockit must be before JUnit in classpath -->
         <dependency>
             <groupId>com.googlecode.jmockit</groupId>
             <artifactId>jmockit</artifactId>
