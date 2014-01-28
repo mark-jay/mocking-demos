@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Created by fallen on 1/27/14.
  */
-public class JMockitTestSuite {
+public class JMockitTestSuit {
     public static class Dependency {
         public int doFoo(int a) {
             return a+1;
@@ -91,5 +91,22 @@ public class JMockitTestSuite {
             // Other mock or regular methods...
         };
         System.out.println("test 5: " + new Dependant().doFoo2(2));
+    }
+
+    /** the same but with interfaces */
+    @Test
+    public void test_5_1() {
+        Dependant1 dependant1 = new Dependant1();
+
+        dependant1.dep = new MockUp<Dependency1>() {
+            @Mock(invocations = 2) // (the invocation count constraint is optional)
+            public int doFoo(int a) {
+                Assert.assertTrue(a > 0);
+                return a+1;
+            }
+            // Other mock or regular methods...
+        }.getMockInstance();
+
+        System.out.println("test 5: " + dependant1.doFoo2(2));
     }
 }
