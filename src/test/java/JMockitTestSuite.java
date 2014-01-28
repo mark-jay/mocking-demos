@@ -1,7 +1,4 @@
-import mockit.Expectations;
-import mockit.Mocked;
-import mockit.NonStrictExpectations;
-import mockit.Verifications;
+import mockit.*;
 import org.junit.Test;
 
 /**
@@ -34,5 +31,34 @@ public class JMockitTestSuite {
             depcy.doFoo(anyInt); result = 10;
         }};
         System.out.println(new Dependant().doFoo2(2));
+    }
+
+    /**
+     * or it could even be interface.
+     * yet another example.
+     */
+    public static interface Dependency1 {
+        public int doFoo(int a);
+    }
+
+    public static class Dependant1 {
+        private Dependency1 dep = new Dependency1() {
+            @Override
+            public int doFoo(int a) {
+                return 0;
+            }
+        };
+        public int doFoo2(int a) {
+            return dep.doFoo(dep.doFoo(a));
+        }
+    }
+
+    @Test
+    public void test_2(@Capturing final Dependency1 depcy1) {
+        new Expectations() {{
+            depcy1.doFoo(anyInt); result = 10;
+            depcy1.doFoo(anyInt); result = 10;
+        }};
+        System.out.println("test2: " + new Dependant1().doFoo2(2));
     }
 }
