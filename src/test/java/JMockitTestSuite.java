@@ -56,8 +56,7 @@ public class JMockitTestSuite {
     @Test
     public void test_2(@Capturing final Dependency1 depcy1) {
         new Expectations() {{
-            depcy1.doFoo(anyInt); result = 10;
-            depcy1.doFoo(anyInt); result = 10;
+            depcy1.doFoo(anyInt); result = 10; times = 2;
         }};
         System.out.println("test2: " + new Dependant1().doFoo2(2));
     }
