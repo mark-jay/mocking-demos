@@ -19,10 +19,25 @@ public class JMockitTestSuit2 {
         }
     }
 
+    // @Injectable
     @Test
     public void test_1(@Injectable final Dependency depcy) {
         new NonStrictExpectations() {{
             depcy.doFoo(anyInt); result = 33;
+        }};
+
+        Dependant d = new Dependant();
+        System.out.println("test 1(0): " + d.doFoo2(2));
+        d.dep = depcy;
+        System.out.println("test 1(1): " + d.doFoo2(2));
+    }
+
+    // withXyz
+    @Test
+    public void test_2(@Injectable final Dependency depcy) {
+        new NonStrictExpectations() {{
+            depcy.doFoo(withEqual(2)); result = 33;
+            depcy.doFoo(withEqual(33)); result = 600;
         }};
 
         Dependant d = new Dependant();
