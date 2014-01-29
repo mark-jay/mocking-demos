@@ -62,4 +62,31 @@ public class JMockitTestSuit2 {
         System.out.println("test 3: ");
         d.doFooVoid2(2);
     }
+
+    /** varargs */
+    @SuppressWarnings("unused")
+    class VarArgs
+    {
+        public void varsOnly(int... ints) {}
+        public void mixed(String arg0, int... ints) {}
+    }
+
+    @SuppressWarnings("NullArgumentToVariableArgMethod")
+    @Test
+    public void test_4_expectInvocationWithNoVarArgs(@Mocked final VarArgs mock)
+    {
+        new Expectations() {{
+            mock.varsOnly();
+            mock.varsOnly(null);
+            mock.varsOnly((int[]) any);
+            mock.mixed("abcd");
+            mock.mixed("abcd", null);
+        }};
+
+        mock.varsOnly();
+        mock.varsOnly(null);
+        mock.varsOnly(1,2,3);
+        mock.mixed("abcd");
+        mock.mixed("abcd", null);
+    }
 }
