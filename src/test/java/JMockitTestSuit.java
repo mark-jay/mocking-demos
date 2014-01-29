@@ -46,7 +46,7 @@ public class JMockitTestSuit {
         private Dependency1 dep = new Dependency1() {
             @Override
             public int doFoo(int a) {
-                return 0;
+                return -1;
             }
         };
         public int doFoo2(int a) {
@@ -122,9 +122,22 @@ public class JMockitTestSuit {
         }};
 
         Dependant1 d = new Dependant1();
+        System.out.println("test 6(0): " + d.doFoo2(2));
         d.dep = depcy1_1;
-        System.out.println("test 5(1): " + d.doFoo2(2));
+        System.out.println("test 6(1): " + d.doFoo2(2));
         d.dep = depcy1_2;
-        System.out.println("test 5(2): " + d.doFoo2(2));
+        System.out.println("test 6(2): " + d.doFoo2(2));
+    }
+
+    @Test
+    public void test_7(@Injectable final Dependency depcy) {
+        new NonStrictExpectations() {{
+            depcy.doFoo(anyInt); result = 33;
+        }};
+
+        Dependant d = new Dependant();
+        System.out.println("test 7(0): " + d.doFoo2(2));
+        d.dep = depcy;
+        System.out.println("test 7(1): " + d.doFoo2(2));
     }
 }
