@@ -89,4 +89,19 @@ public class JMockitTestSuit2 {
         mock.mixed("abcd");
         mock.mixed("abcd", null);
     }
+
+    /** delegates */
+    @Test
+    public void test_4(@Mocked final Dependency depcy) {
+        new NonStrictExpectations() {{
+            depcy.doFoo(anyInt); result = new Delegate() {
+                public int doFoo(int i)
+                {
+                    return i*100+1;
+                }
+            };
+        }};
+
+        System.out.println("test 4: " + new Dependant().doFoo2(2));
+    }
 }

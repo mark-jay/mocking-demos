@@ -71,6 +71,42 @@ public class JMockitTestSuit1 {
         }};
     }
 
+    /**
+     * by default verifications are not in order. To achieve that we can use VerificationsInOrder
+     * or like that:
+     * new VerificationsInOrder() {{
+         abc.methodThatNeedsToExecuteFirst();
+         unverifiedInvocations(); // Invocations not verified must come here...
+         xyz.method1();
+         abc.method2();
+         unverifiedInvocations(); // ... and/or here.
+         xyz.methodThatNeedsToExecuteLast();
+       }};
+     so we can achieve some relational order. Especially using more than 1 Verification block
+
+     one more example(can also be used FullVerificationsInOrder instead):
+     new FullVerifications() {{
+         // Verifications here are unordered, so the following invocations could be in any order.
+         mock.setSomething(anyInt); // verifies two actual invocations
+         mock.setSomethingElse(anyString);
+         mock.save(); // if this verification (or any other above) is removed the test will fail
+     }};
+
+     new FullVerifications(mock1) {{ // only mock1 is verified
+         mock1.prepare();
+         mock1.setSomething(anyInt);
+         mock1.editABunchMoreStuff();
+         mock1.save(); times = 1;
+     }};
+
+     // Will verify that no invocations other than to "doSomething()" occurred on mock2:
+     new FullVerifications(mock2) {};
+
+     new FullVerifications() {{
+         mock.getData(); minTimes = 0; // calls to getData are allowed
+     }};
+     * @param depcy1
+     */
     @Test
     public void test_4(@Capturing final Dependency1 depcy1) {
         System.out.println("test 4: " + new Dependant1().doFoo2(2));
