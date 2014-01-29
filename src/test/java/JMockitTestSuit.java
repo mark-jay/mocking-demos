@@ -109,4 +109,22 @@ public class JMockitTestSuit {
 
         System.out.println("test 5: " + dependant1.doFoo2(2));
     }
+
+    // test on exact instance
+    @Test
+    public void test_6(@Mocked final Dependency1 depcy1_1, @Mocked final Dependency1 depcy1_2) {
+        new NonStrictExpectations() {{
+            onInstance(depcy1_1).doFoo(anyInt); result = 33;
+            onInstance(depcy1_2).doFoo(anyInt); result = 55;
+            // or since there are two same depcies we can do it implicitly:
+//            depcy1_1.doFoo(anyInt); result = 33;
+//            depcy1_2.doFoo(anyInt); result = 55;
+        }};
+
+        Dependant1 d = new Dependant1();
+        d.dep = depcy1_1;
+        System.out.println("test 5(1): " + d.doFoo2(2));
+        d.dep = depcy1_2;
+        System.out.println("test 5(2): " + d.doFoo2(2));
+    }
 }
