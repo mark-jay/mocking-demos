@@ -104,4 +104,16 @@ public class JMockitTestSuit2 {
 
         System.out.println("test 4: " + new Dependant().doFoo2(2));
     }
+
+    /** Capturing */
+    @Test
+    public void test_5(@Mocked final Dependency depcy) {
+        System.out.println("test 5: " + new Dependant().doFoo2(2));
+
+        new Verifications() {{
+            int x;
+            depcy.doFoo(x = withCapture());
+            Assert.assertTrue(x < 10);
+        }};
+    }
 }
