@@ -3,6 +3,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * more info here:
+ * http://jmockit.googlecode.com/svn/trunk/www/tutorial/BehaviorBasedTesting.html#mocked
  * Created by fallen on 1/27/14.
  */
 public class JMockitTestSuit1 {

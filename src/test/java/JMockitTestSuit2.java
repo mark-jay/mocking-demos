@@ -112,8 +112,72 @@ public class JMockitTestSuit2 {
 
         new Verifications() {{
             int x;
-            depcy.doFoo(x = withCapture());
+            depcy.doFoo(x = withCapture());// single call expected
             Assert.assertTrue(x < 10);
+            // if more than one call expected we should use this instead:
+            /*
+            List<DataObject> dataObjects = new ArrayList<>();
+            mock.doSomething(withCapture(dataObjects));
+            */
         }};
     }
+
+    /**
+     * Accessing private fields, methods and constructors
+     new NonStrictExpectations() {{
+     // Expectations still recorded, even if the invocations are done through Reflection:
+     newInstance("some.package.AnotherDependency", true, "test"); maxTimes = 1;
+     invoke(abc, "intReturningMethod", 45, ""); result = 1;
+     // other expectations recorded...
+     }};
+     */
+
+    /**
+     * partial mocking(they say it can be done dynamically too)):
+     *  @Mocked("nanoTime") final System system = null;
+
+     @Test
+     public void staticPartialMocking(
+     @Mocked({"(int)", "doInternal()", "[gs]etValue", "complexOperation(Object)"})
+     final Collaborator mock)
+     {
+     * */
+
+
+    /*@Cascading mocks available too*/
+
+    /** or we can even capture using @Capturing inner classes that are not available*/
+
+    /** expectation can be reused(or using inheritance):
+     * @Test
+    public void setAccountToLoggedInWhenPasswordMatches() throws Exception
+    {
+        willMatchPassword(true);
+
+        service.login("john", "password");
+
+        new Verifications() {{ account.setLoggedIn(true); }};
+    }
+
+    private void willMatchPassword(final boolean match)
+    {
+        new NonStrictExpectations() {{ account.passwordMatches(anyString); result = match; }};
+    }
+     */
+
+    /** Mocking multiple interfaces at the same time - using generics*/
+
+   /** Iterated expectations(and the same with verifications) :
+    *
+    new Expectations(2) {{
+        mock.setSomething(anyInt);
+        mock.save();
+    }};
+
+    // In the tested code:
+    mock.setSomething(123);
+    mock.save();
+    mock.setSomething(45);
+    mock.save();
+    * */
 }
